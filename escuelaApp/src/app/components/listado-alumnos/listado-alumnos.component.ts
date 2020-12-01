@@ -32,8 +32,8 @@ export class ListadoAlumnosComponent implements OnInit {
   cargarAlumno(){
     this.alumnoService.getListAlumno().subscribe( data => {
       this.list= data;
-    //debugger;
-      //console.log(this.list);
+    debugger;
+      console.log(this.list);
     })
   }
   delete(id:number){
