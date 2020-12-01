@@ -1,0 +1,24 @@
+<div class="row" style="padding-top: 10px;">
+    <div class="col-lg-6">
+        <h3>Lista de Salones</h3>
+    </div>
+    <div class="col-lg-6">
+        <button class="btn btn-success float-center"[routerLink]="['listadoS']">Salones</button>
+        <button class="btn btn-primary float-right" [routerLink]="['agregarS']">Nuevo Salon</button>
+    </div>
+</div>
+<br>
+<table class="table table-sm table-hover">
+    <thead>
+        <th>Nombre </th>
+        <th></th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let salon of lista">
+            <td><a>{{salon.nombre}}</a></td>
+            <td><button class="btn btn-primary btn-sm float-right">Editar</button></td>
+            <td><button class="btn btn-danger btn-sm float-right">Eliminar</button></td>
+        </tr>
+    </tbody>
+</table>
