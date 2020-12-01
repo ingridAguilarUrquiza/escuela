@@ -23,7 +23,7 @@ namespace escuelaPrueba.Controllers
         public IEnumerable<WeatherForecast> Get()
         {
             List<WeatherForecast> lst = new List<WeatherForecast>();
-            lst.Add(new WeatherForecast() { id = 5, nombre = "ingridM" });
+            lst.Add(new WeatherForecast() { id = 5, nombre = "ingrid" });
             return lst;
         }
     }
