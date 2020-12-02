@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Salon } from '../models/salon';
+import { Resp, Salon } from '../models/salon';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,8 @@ export class SalonService {
     private _http:HttpClient
     ) {}
   
-  getListSalon(): Observable<Salon>{
-    return this._http.get<Salon>(this.backendUrl+this.frontendUrl);
+  getListSalon(): Observable<Resp>{
+    return this._http.get<Resp>(this.backendUrl+this.frontendUrl);
     }
   deleteSalon(id:number): Observable<Salon>{
     return this._http.delete<Salon>(this.backendUrl+this.frontendUrl+id);
@@ -26,10 +26,13 @@ export class SalonService {
   guardarSalon(salon:Salon): Observable<Salon>{
     return this._http.post<Salon>(this.backendUrl+this.frontendUrl,salon,this.httpOptions);
   }
-  cargarSalon(id:number):Observable<Salon>{
+  cargarSalon(id:number):Observable<Resp>{
+    return this._http.get<Resp>(this.backendUrl+this.frontendUrl+id);
+  }
+  cargarSalonEditar(id:number):Observable<Salon>{
     return this._http.get<Salon>(this.backendUrl+this.frontendUrl+id);
   }
-  actualizarSalon(id:number,alumno:Salon):Observable<Salon>{
-    return this._http.put<Salon>(this.backendUrl+this.frontendUrl+id,alumno,this.httpOptions);
+  actualizarSalon(id:number,salon:Salon):Observable<Salon>{
+    return this._http.put<Salon>(this.backendUrl+this.frontendUrl+id,salon,this.httpOptions);
   }
 }

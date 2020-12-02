@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Salon } from 'src/app/models/salon';
+import { Router } from '@angular/router';
+import { Resp,Salon } from 'src/app/models/salon';
 import { SalonService } from 'src/app/services/salon.service';
 
 
@@ -11,7 +12,7 @@ import { SalonService } from 'src/app/services/salon.service';
 export class ListadoSalonesComponent implements OnInit {
   lista: Salon[]=[];
   listaSalon:any;
-  constructor(private salonService:SalonService) { }
+  constructor(private salonService:SalonService, private router:Router) { }
 
   ngOnInit(): void {
     this.cargarSalones();
@@ -21,6 +22,19 @@ export class ListadoSalonesComponent implements OnInit {
       this.listaSalon= response.data;
     /*debugger;
       console.log(this.listaSalon);*/
+    })
+  }
+  agregarSalon(){
+    //console.log(id);
+    this.router.navigate(['agregarSalon']);
+  }
+  verDetalleSalon(id: number){
+    console.log(id);
+    this.router.navigate([`editarSalon/${id}`]);
+  }
+  deleteSalon(id: number){
+    this.salonService.deleteSalon(id).subscribe(data =>{
+      this.cargarSalones()
     })
   }
 }

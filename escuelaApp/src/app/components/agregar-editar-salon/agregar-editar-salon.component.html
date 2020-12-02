@@ -1,1 +1,25 @@
-<p>agregar-editar-salon works!</p>
+<h3>{{accion}}  Salon</h3>
+<form [formGroup]="registroSalon" (ngSubmit)="guardarSalon()">
+    <div class="form-group row">
+      <label class="control-label col-md-12">Nombre</label>
+      <div class="col-md-12">
+        <input type="text" class="form-control" formControlName="nombre">
+      </div>
+      <span class="text-danger ml-3" *ngIf="registroSalon.controls.nombre.errors?.required && registroSalon.controls.nombre.touched">
+          El nombre es requerido
+        </span>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-md-12">Descripcion</label>
+        <div class="col-md-12">
+          <input type="text" class="form-control" formControlName="descripcion">
+        </div>
+        <span class="text-danger ml-3" *ngIf="registroSalon.controls.descripcion.errors?.required && registroSalon.controls.descripcion.touched">
+            La descripcion es requerido
+        </span>
+      </div>
+      <div class="form-group">
+          <button class="btn btn-success float-right" [disabled]="registroSalon.invalid">Aceptar</button>
+          <button [routerLink]="['/listadoSalones']" class="btn btn-secondary float-left">Cancelar</button>
+      </div>
+  </form>

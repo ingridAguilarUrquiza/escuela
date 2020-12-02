@@ -49,10 +49,10 @@ export class ListadoAlumnosComponent implements OnInit {
     //console.log(id);
     this.router.navigate([`ver/${id}`]);
   }
-  /*listadoSalones(){
+  listadoSalones(){
     //console.log(id);
-    this.router.navigate(['listadoS']);
-  }*/
+    this.router.navigate(['listadoSalones']);
+  }
 
 
   
