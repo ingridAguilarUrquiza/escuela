@@ -9,10 +9,10 @@ import {ListadoSalonesComponent} from './components/listado-salones/listado-salo
 const routes: Routes = [
   {path:'agregarA',component:AgregarEditarAlumnoComponent},
   {path:'editarA/:id',component:AgregarEditarAlumnoComponent},
-  {path:'agregarS',component:AgregarEditarSalonComponent},
+  {path:'agregarSalon',component:AgregarEditarSalonComponent},
   {path:'editarS/:id',component:AgregarEditarSalonComponent},
   {path:'listadoA',component:ListadoAlumnosComponent},
-  {path:'listadoS',component:ListadoSalonesComponent},
+  {path:'listadoSalones',component:ListadoSalonesComponent},
   {path:'ver/:id',component:VerAlumnoComponent},
   {path:'',component:ListadoAlumnosComponent,pathMatch:'full'},
   {path:'**',redirectTo:'/'}

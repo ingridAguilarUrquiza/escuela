@@ -17,8 +17,8 @@ export class SalonService {
     private _http:HttpClient
     ) {}
   
-  getListSalon(): Observable<Salon[]>{
-    return this._http.get<Salon[]>(this.backendUrl+this.frontendUrl);
+  getListSalon(): Observable<Salon>{
+    return this._http.get<Salon>(this.backendUrl+this.frontendUrl);
     }
   deleteSalon(id:number): Observable<Salon>{
     return this._http.delete<Salon>(this.backendUrl+this.frontendUrl+id);

@@ -30,13 +30,13 @@ export class ListadoAlumnosComponent implements OnInit {
    this.cargarAlumno();
   }
   cargarAlumno(){
-    this.alumnoService.getListAlumno().subscribe( data => {
-      this.list= data;
+    this.alumnoService.getListAlumno().subscribe( r => {
+      this.list= r;
     /*debugger;
       console.log(this.list);*/
     })
   }
-  delete(id:number){
+  delete(id: number){
     this.alumnoService.deleteAlumno(id).subscribe(data =>{
       this.cargarAlumno()
     })

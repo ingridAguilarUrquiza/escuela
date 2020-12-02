@@ -3,20 +3,21 @@
         <h3>Lista de Salones</h3>
     </div>
     <div class="col-lg-6">
-        <button class="btn btn-success float-center"[routerLink]="['listadoS']">Salones</button>
-        <button class="btn btn-primary float-right" [routerLink]="['agregarS']">Nuevo Salon</button>
+        <button class="btn btn-success float-center"[routerLink]="['listadoSalones']">Salones</button>
+        <button class="btn btn-primary float-right" [routerLink]="['agregarSalon']">Nuevo Salon</button>
     </div>
 </div>
 <br>
 <table class="table table-sm table-hover">
     <thead>
-        <th>Nombre </th>
-        <th></th>
+        <th>Nombre del Salon</th>
+        <th>Descripcion</th>
         <th></th>
     </thead>
     <tbody>
-        <tr *ngFor="let salon of listaSalon.data">
+        <tr *ngFor="let salon of listaSalon">
             <td><a>{{salon.nombre}}</a></td>
+            <td><a>{{salon.descripcion}}</a></td>
             <td><button class="btn btn-primary btn-sm float-right">Editar</button></td>
             <td><button class="btn btn-danger btn-sm float-right">Eliminar</button></td>
         </tr>
