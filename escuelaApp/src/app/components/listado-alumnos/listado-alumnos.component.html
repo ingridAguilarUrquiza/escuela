@@ -16,8 +16,8 @@
     </thead>
     <tbody>
         <tr *ngFor="let alumno of list">
-            <td><a (click)="verA(alumno.id)">{{alumno.nombreCompleto}}</a></td>
-            <td><button class="btn btn-primary btn-sm float-right" (click)="verDetalles(alumno.id)">Editar</button></td>
+            <td><a [routerLink]="['/ver/',alumno.id]">{{alumno.nombreCompleto}}</a></td>
+            <td><button class="btn btn-primary btn-sm float-right" [routerLink]="['/editarA/',alumno.id]">Editar</button></td>
             <td><button class="btn btn-danger btn-sm float-right" (click)="delete(alumno.id)">Eliminar</button></td>
         </tr>
     </tbody>

@@ -39,6 +39,7 @@ guardarSalon(){
     })
     }else{
       const salon:Salon={
+        id:this.salon?.id,
         nombre:this.registroSalon.get('nombre')?.value,
         descripcion:this.registroSalon.get('descripcion')?.value,
       }
