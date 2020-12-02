@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Salon } from 'src/app/models/salon';
+import { Resp, Salon } from 'src/app/models/salon';
 import { SalonService } from 'src/app/services/salon.service';
 
 
@@ -10,16 +10,17 @@ import { SalonService } from 'src/app/services/salon.service';
 })
 export class ListadoSalonesComponent implements OnInit {
   lista: Salon[]=[];
+  listaSalon:any;
   constructor(private salonService:SalonService) { }
 
   ngOnInit(): void {
     this.cargarSalones();
   }
   cargarSalones(){
-    this.salonService.getListSalon().subscribe( data => {
-      this.lista= data;
-    //debugger;
-      //console.log(this.list);
+    this.salonService.getListSalon().subscribe( response => {
+      this.listaSalon= response;
+    debugger;
+      console.log(this.listaSalon);
     })
   }
 }

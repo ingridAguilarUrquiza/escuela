@@ -3,3 +3,8 @@ export interface Salon{
     nombre:string;
     descripcion: string;
 }
+
+
+export interface Resp{
+    data:Salon[];
+}
