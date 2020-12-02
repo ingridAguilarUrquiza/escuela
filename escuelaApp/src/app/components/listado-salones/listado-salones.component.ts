@@ -12,13 +12,16 @@ import { SalonService } from 'src/app/services/salon.service';
 export class ListadoSalonesComponent implements OnInit {
   lista: Salon[]=[];
   listaSalon:any;
+  loading=false;
   constructor(private salonService:SalonService, private router:Router) { }
 
   ngOnInit(): void {
     this.cargarSalones();
   }
   cargarSalones(){
+    this.loading=true;
     this.salonService.getListSalon().subscribe( response => {
+      this.loading=false;
       this.listaSalon= response.data;
     /*debugger;
       console.log(this.listaSalon);*/
@@ -33,7 +36,9 @@ export class ListadoSalonesComponent implements OnInit {
     this.router.navigate([`editarSalon/${id}`]);
   }
   deleteSalon(id: number){
+    this.loading=true;
     this.salonService.deleteSalon(id).subscribe(data =>{
+      this.loading=false;
       this.cargarSalones()
     })
   }

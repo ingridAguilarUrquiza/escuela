@@ -1,1 +1,10 @@
-<p>ver-salon works!</p>
+<div class="spinner-border text-primary" role="status" *ngIf="loading">
+    <span class="sr-only">Loading...</span>
+  </div>
+<div>
+    <h3>{{salon.data.nombre}}</h3>
+    <h5>{{salon.data.descripcion}}</h5>
+    <ul>
+        <li>listado de alumnos</li>
+    </ul>
+</div>

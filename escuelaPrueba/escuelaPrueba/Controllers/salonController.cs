@@ -103,5 +103,27 @@ namespace escuelaPrueba.Controllers
             }
             return Ok(orespuesta);
         }
+
+        [HttpGet("{id}")]
+        public ActionResult<Alumno> Get(int id)
+        {
+            Respuesta orespuesta = new Respuesta();
+            orespuesta.Exito = 0;
+            try
+            {
+                using (escuelaContext db = new escuelaContext())
+                {
+                    var lst = db.Salon.Find(id);
+                    orespuesta.Exito = 1;
+                    orespuesta.Data = lst;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                orespuesta.Mensaje = ex.Message;
+            }
+            return Ok(orespuesta);
+        }
     }
 }

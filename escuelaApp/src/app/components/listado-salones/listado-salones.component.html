@@ -7,6 +7,9 @@
         <button class="btn btn-primary float-right" (click)="agregarSalon()">Agregar Salon</button>
     </div>
 </div>
+<div class="spinner-border text-primary" role="status" *ngIf="loading">
+    <span class="sr-only">Loading...</span>
+  </div>
 <br>
 <table class="table table-sm table-hover">
     <thead>
@@ -16,7 +19,7 @@
     </thead>
     <tbody>
         <tr *ngFor="let salon of listaSalon">
-            <td><a>{{salon.nombre}}</a></td>
+            <td><a [routerLink]="['/verSalon/',salon.id]">{{salon.nombre}}</a></td>
             <td><a>{{salon.descripcion}}</a></td>
             <td><button class="btn btn-primary btn-sm float-right" (click)="verDetalleSalon(salon.id)">Editar</button></td>
             <td><button class="btn btn-danger btn-sm float-right"(click)="deleteSalon(salon.id)">Eliminar</button></td>

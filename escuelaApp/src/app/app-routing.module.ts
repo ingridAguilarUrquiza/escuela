@@ -5,6 +5,7 @@ import { AgregarEditarSalonComponent } from './components/agregar-editar-salon/a
 import { ListadoAlumnosComponent } from './components/listado-alumnos/listado-alumnos.component';
 import { VerAlumnoComponent } from './components/ver-alumno/ver-alumno.component';
 import {ListadoSalonesComponent} from './components/listado-salones/listado-salones.component';
+import { VerSalonComponent } from './components/ver-salon/ver-salon.component';
 
 const routes: Routes = [
   {path:'agregarA',component:AgregarEditarAlumnoComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path:'ver/:id',component:VerAlumnoComponent},
   {path:'listadoSalones',component:ListadoSalonesComponent},
   {path:'agregarSalon',component:AgregarEditarSalonComponent},
+  {path:'verSalon/:id',component:VerSalonComponent},
   {path:'',component:ListadoAlumnosComponent,pathMatch:'full'},
   {path:'**',redirectTo:'/'}
 
