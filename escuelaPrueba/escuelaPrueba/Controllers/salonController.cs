@@ -59,7 +59,7 @@ namespace escuelaPrueba.Controllers
             }
             return Ok(orespuesta);
         }
-        [HttpPut]
+        /*[HttpPut]
         public IActionResult Edit(salonRequest omodel)
         {
             Respuesta orespuesta = new Respuesta();
@@ -71,6 +71,28 @@ namespace escuelaPrueba.Controllers
                     oSalon.Nombre = omodel.nombre;
                     oSalon.Descripcion = omodel.descripcion;
                     db.Entry(oSalon).State = EntityState.Modified;
+                    db.SaveChanges();
+                    orespuesta.Exito = 1;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                orespuesta.Mensaje = ex.Message;
+            }
+            return Ok(orespuesta);
+        }*/
+        [HttpPut("{id}")]
+        public IActionResult Edit(int id, [FromBody] Salon salon)
+        {
+            Respuesta orespuesta = new Respuesta();
+            try
+            {
+                using (escuelaContext db = new escuelaContext())
+                {
+                    salon.Id = id;
+                    db.Entry(salon).State = EntityState.Modified;
+                    db.Update(salon);
                     db.SaveChanges();
                     orespuesta.Exito = 1;
                 }
@@ -105,7 +127,7 @@ namespace escuelaPrueba.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Alumno> Get(int id)
+        public ActionResult<Salon> Get(int id)
         {
             Respuesta orespuesta = new Respuesta();
             orespuesta.Exito = 0;

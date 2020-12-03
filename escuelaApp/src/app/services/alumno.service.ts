@@ -27,8 +27,8 @@ export class AlumnoService {
   guardarAlumno(alumno:Alumno): Observable<Alumno>{
     return this._http.post<Alumno>(this.backendUrl+this.frontendUrl,alumno,this.httpOptions);
   }
-  cargarAlumno(id:number):Observable<Alumno>{
-    return this._http.get<Alumno>(this.backendUrl+this.frontendUrl+id);
+  cargarAlumno(id:number):Observable<Respuesta>{
+    return this._http.get<Respuesta>(this.backendUrl+this.frontendUrl+id);
   }
   actualizarAlumno(id:number,alumno:Alumno):Observable<Alumno>{
     return this._http.put<Alumno>(this.backendUrl+this.frontendUrl+id,alumno,this.httpOptions);

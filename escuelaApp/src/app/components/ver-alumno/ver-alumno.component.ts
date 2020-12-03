@@ -18,10 +18,8 @@ export class VerAlumnoComponent implements OnInit {
     this.cargarAlumno();
   }
   cargarAlumno(){
-    this.alumnoService.cargarAlumno(this.idAlumno).subscribe(data =>{
-      this.alumno =data;
-      debugger;
-      console.log(this.alumno);
+    this.alumnoService.cargarAlumno(this.idAlumno).subscribe(resp =>{
+      this.alumno =resp.data as string[];
     })
   }
 

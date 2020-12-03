@@ -24,7 +24,7 @@ loading=false;
   cargarSalon(){
 console.log(this.idSa);
     this.loading=true;
-    this.salonService.cargarSalonEditar(this.idSa).subscribe(resp =>{
+    this.salonService.cargarSalon(this.idSa).subscribe(resp =>{
       this.loading=false;
       this.respuesta =resp.data;
     //debugger;

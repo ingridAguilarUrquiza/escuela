@@ -13,7 +13,7 @@ export class AgregarEditarAlumnoComponent implements OnInit {
   registroAlumno: FormGroup;
   idAlumno=0;
   accion='Agregar';
-  alumno: Alumno | undefined;
+  alumno:any;
   constructor(private formValidar:FormBuilder, private router:ActivatedRoute, 
     private alumnoService:AlumnoService,private routerR:Router) {
      this.registroAlumno=this.formValidar.group({
@@ -67,16 +67,16 @@ editarAlumno(){
  // alert("editar"+this.accion);
   if(this.idAlumno>0){
     this.accion='Editar';
-    this.alumnoService.cargarAlumno(this.idAlumno).subscribe(data=>{
-      this.alumno=data;
+    this.alumnoService.cargarAlumno(this.idAlumno).subscribe(resp=>{
+      this.alumno=resp.data as string[];
       this.registroAlumno.patchValue({
-        id:data.id,
-        nombre:data.nombre,
-        apellidoPaterno:data.apellidoPaterno,
-        apellidoMaterno:data.apellidoMaterno,
-        telefono:data.telefono,
-        edad:data.edad,
-        genero:data.genero
+        id:resp.data.id,
+        nombre:resp.data.nombre,
+        apellidoPaterno:resp.data.apellidoPaterno,
+        apellidoMaterno:resp.data.apellidoMaterno,
+        telefono:resp.data.telefono,
+        edad:resp.data.edad,
+        genero:resp.data.genero
       })
     })
    
