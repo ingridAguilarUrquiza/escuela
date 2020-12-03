@@ -3,6 +3,7 @@ import { Alumno } from 'src/app/models/alumno';
 import { AlumnoService } from 'src/app/services/alumno.service';
 import {CommonModule} from '@angular/common';
 import { Router } from '@angular/router';
+import { Respuesta } from 'src/app/models/respuesta';
 
 
 @Component({
@@ -11,17 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./listado-alumnos.component.css']
 })
 export class ListadoAlumnosComponent implements OnInit {
-  //public lista: Alumno[];//any[];
-  //public lista:string[] | undefined;
-  //public list!: [Alumno];
-  //public list=[];
- // list:any[];
- //public lista: Alumno[];//any[];
-  //public lista:string[] | undefined;
-  //public list!: [Alumno];
-  //public list=[];
-  // list:any[];
-  list: Alumno[] = [];
+  list:any;
   loaging=false;
   constructor(private alumnoService: AlumnoService,private router:Router) { 
      
@@ -31,10 +22,11 @@ export class ListadoAlumnosComponent implements OnInit {
   }
   cargarAlumno(){
     this.loaging=true;
-    this.alumnoService.getListAlumno().subscribe( r => {
+    this.alumnoService.getListAlumno().subscribe( resp => {
       this.loaging=false;
-      this.list= r;
-    /*debugger;
+      this.list=resp.data as string[];
+     /*console.log(resp);
+    debugger;
       console.log(this.list);*/
     })
   }

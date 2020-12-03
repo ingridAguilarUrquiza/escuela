@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup,Validators} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Resp,Salon } from 'src/app/models/salon';
+import { Respuesta } from 'src/app/models/respuesta';
+import { Salon} from 'src/app/models/salon';
 import { SalonService } from 'src/app/services/salon.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class AgregarEditarSalonComponent implements OnInit {
   idSa=0;
   accion='Agregar';
   salon: Salon | undefined;
-  respuesta!: Resp;
+  respuesta!: Respuesta;
   constructor(private formValidar:FormBuilder, private router:ActivatedRoute, 
     private salonService:SalonService,private routerR:Router) {
      this.registroSalon=this.formValidar.group({
@@ -40,7 +41,7 @@ guardarSalon(){
     })
     }else{
       const salon:Salon={
-        id:this.salon?.id,
+        //id:this.salon.id,
         nombre:this.registroSalon.get('nombre')?.value,
         descripcion:this.registroSalon.get('descripcion')?.value,
       }

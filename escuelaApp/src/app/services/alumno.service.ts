@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Alumno } from '../models/alumno';
+import { Respuesta } from '../models/respuesta';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class AlumnoService {
     private _http:HttpClient
     ) {}
   
-  getListAlumno(): Observable<Alumno[]>{
-    return this._http.get<Alumno[]>(this.backendUrl+this.frontendUrl);
+  getListAlumno(): Observable<Respuesta>{
+    return this._http.get<Respuesta>(this.backendUrl+this.frontendUrl);
     }
   deleteAlumno(id:number): Observable<Alumno>{
     return this._http.delete<Alumno>(this.backendUrl+this.frontendUrl+id);

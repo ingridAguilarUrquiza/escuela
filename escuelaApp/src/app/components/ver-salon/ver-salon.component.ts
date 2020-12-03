@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Resp, Salon } from 'src/app/models/salon';
+import { Respuesta} from 'src/app/models/respuesta';
+import { Salon }from 'src/app/models/salon';
 import { SalonService } from 'src/app/services/salon.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { SalonService } from 'src/app/services/salon.service';
 })
 export class VerSalonComponent implements OnInit {
 loading=false;
-  respuesta!: Resp;
+  respuesta!: Respuesta;
   idSa!: number;
   constructor(private salonService:SalonService, private router:ActivatedRoute) {
     this.idSa=this.router.snapshot.params['id'];

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Resp,Salon } from 'src/app/models/salon';
+import { Respuesta} from 'src/app/models/respuesta';
+import { Salon }from 'src/app/models/salon';
 import { SalonService } from 'src/app/services/salon.service';
 
 
@@ -10,7 +11,6 @@ import { SalonService } from 'src/app/services/salon.service';
   styleUrls: ['./listado-salones.component.css']
 })
 export class ListadoSalonesComponent implements OnInit {
-  lista: Salon[]=[];
   listaSalon:any;
   loading=false;
   constructor(private salonService:SalonService, private router:Router) { }

@@ -9,7 +9,7 @@ import { AlumnoService } from 'src/app/services/alumno.service';
   styleUrls: ['./ver-alumno.component.css']
 })
 export class VerAlumnoComponent implements OnInit {
-  alumno!: Alumno;
+  alumno:any;
   idAlumno:number;
   constructor(private alumnoService: AlumnoService, private router:ActivatedRoute) { 
   this.idAlumno=this.router.snapshot.params['id'];
@@ -20,6 +20,8 @@ export class VerAlumnoComponent implements OnInit {
   cargarAlumno(){
     this.alumnoService.cargarAlumno(this.idAlumno).subscribe(data =>{
       this.alumno =data;
+      debugger;
+      console.log(this.alumno);
     })
   }
 
