@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Salon } from 'src/app/models/salon';
+import { Resp, Salon } from 'src/app/models/salon';
 import { SalonService } from 'src/app/services/salon.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { SalonService } from 'src/app/services/salon.service';
 })
 export class VerSalonComponent implements OnInit {
 loading=false;
-  salon!: Salon;
+  respuesta!: Resp;
   idSa!: number;
   constructor(private salonService:SalonService, private router:ActivatedRoute) {
     this.idSa=this.router.snapshot.params['id'];
@@ -25,9 +25,9 @@ console.log(this.idSa);
     this.loading=true;
     this.salonService.cargarSalonEditar(this.idSa).subscribe(resp =>{
       this.loading=false;
-      this.salon =resp;
+      this.respuesta =resp.data;
     //debugger;
-      console.log(this.salon);
+      console.log(this.respuesta);
     })
   }
 }

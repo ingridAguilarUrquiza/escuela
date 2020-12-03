@@ -29,8 +29,8 @@ export class SalonService {
   cargarSalon(id:number):Observable<Resp>{
     return this._http.get<Resp>(this.backendUrl+this.frontendUrl+id);
   }
-  cargarSalonEditar(id:number):Observable<Salon>{
-    return this._http.get<Salon>(this.backendUrl+this.frontendUrl+id);
+  cargarSalonEditar(id:number):Observable<Resp>{
+    return this._http.get<Resp>(this.backendUrl+this.frontendUrl+id);
   }
   actualizarSalon(id:number,salon:Salon):Observable<Salon>{
     return this._http.put<Salon>(this.backendUrl+this.frontendUrl+id,salon,this.httpOptions);

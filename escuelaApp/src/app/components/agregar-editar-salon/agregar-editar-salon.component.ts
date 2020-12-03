@@ -14,6 +14,7 @@ export class AgregarEditarSalonComponent implements OnInit {
   idSa=0;
   accion='Agregar';
   salon: Salon | undefined;
+  respuesta!: Resp;
   constructor(private formValidar:FormBuilder, private router:ActivatedRoute, 
     private salonService:SalonService,private routerR:Router) {
      this.registroSalon=this.formValidar.group({
@@ -43,9 +44,10 @@ guardarSalon(){
         nombre:this.registroSalon.get('nombre')?.value,
         descripcion:this.registroSalon.get('descripcion')?.value,
       }
-      //debugger;
+
       this.salonService.actualizarSalon(this.idSa,salon).subscribe(data=>{
-        this.routerR.navigate(['/ListadoSalones']);
+       console.log("actualizar "+data);
+        // this.routerR.navigate(['/ListadoSalones']);
       });
     
     }
@@ -61,12 +63,12 @@ editarSalon(){
     this.accion='Editar';
     //console.log("e"+this.accion+this.idSa);
     this.salonService.cargarSalonEditar(this.idSa).subscribe(resp=>{
-     this.salon = resp;
+     this.respuesta = resp;
      //console.log(this.salon);
       this.registroSalon.patchValue({
-        id:resp.id,
-        nombre:resp.nombre,
-        descripcion:resp.descripcion
+        id:resp.data.id,
+        nombre:resp.data.nombre,
+        descripcion:resp.data.descripcion
       })
       console.log(this.salon);
     })

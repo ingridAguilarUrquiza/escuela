@@ -1,6 +1,6 @@
 export interface Alumno{
     id? :number;
-    //nombreCompleto:string;
+    //nombreCompleto:any;
     nombre :string;
     apellidoPaterno :string;
     apellidoMaterno : string;

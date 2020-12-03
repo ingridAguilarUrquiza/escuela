@@ -16,7 +16,7 @@ namespace escuelaPrueba.Controllers
     [ApiController]
     public class AlumnoController : ControllerBase
     {
-        private readonly escuelaContext _context;
+        /*private readonly escuelaContext _context;
 
         public AlumnoController(escuelaContext context)
         {
@@ -140,7 +140,7 @@ namespace escuelaPrueba.Controllers
              return null;
 
          }
-     }
+     }*/
         [HttpGet]//listado de datos
             public IActionResult Get()
             {
@@ -150,10 +150,27 @@ namespace escuelaPrueba.Controllers
                 {
                     using (escuelaContext db = new escuelaContext())
                     {
-                        var lst = db.Alumno.ToList();
-                        orespuesta.Exito = 1;
-                        orespuesta.Data = lst;
+                            var listAlumno = db.Alumno.Select(alu =>
+                            new AlumnoInfo()
+                            {
+                                Id = alu.Id,
+                                Nombre =alu.Nombre,
+                                ApellidoPaterno=alu.ApellidoPaterno,
+                                ApellidoMaterno=alu.ApellidoMaterno,
+                                ListSalon = new List<int>()
+                            }).ToList();
 
+                            foreach (var alumno in listAlumno)
+                            {
+                                var relacionSalon =db.Alumnosalon.FirstOrDefault(f => f.AlumnoId == alumno.Id);
+                                if (relacionSalon != null)
+                                {
+                                    alumno.ListSalon.Add((int)relacionSalon.SalonId);
+                                }
+
+                            }
+                        orespuesta.Exito = 1;
+                        orespuesta.Data = listAlumno;
                     }
                 }
                 catch (Exception ex)
@@ -162,22 +179,39 @@ namespace escuelaPrueba.Controllers
                 }
                 return Ok(orespuesta);
             }
-            [HttpPost]//insersion de datos a la base Escuela
-            public IActionResult Add(alumnoRequest omodel) 
+        [HttpGet("{id}")]
+        public ActionResult<Alumno> Get(int id)
+        {
+            Respuesta orespuesta = new Respuesta();
+            try
+            {
+                using (escuelaContext db=new escuelaContext())
+                {
+                    var alumno = db.Alumno.Find(id);
+                    orespuesta.Exito = 1;
+                    orespuesta.Data = alumno;
+
+                }
+                   
+            }
+            catch (Exception ex)
+            {
+                orespuesta.Mensaje=ex.Message;
+
+            }
+            return Ok(orespuesta);
+
+        }
+        [HttpPost]//insersion de datos a la base Escuela
+            public IActionResult Add([FromBody] Alumno alumno) 
             {
                 Respuesta orespuesta = new Respuesta();
                 try
                 {
                     using (escuelaContext db = new escuelaContext())
                     {
-                        Alumno oAlumno = new Alumno();
-                        oAlumno.Nombre = omodel.nombre;
-                        oAlumno.ApellidoPaterno = omodel.apellidoPaterno;
-                        oAlumno.ApellidoMaterno = omodel.apellidoMaterno;
-                        oAlumno.Telefono = omodel.telefono;
-                        oAlumno.Edad = omodel.edad;
-                        oAlumno.Genero = omodel.genero;
-                        db.Alumno.Add(oAlumno);
+                        
+                        db.Alumno.Add(alumno);
                         db.SaveChanges();
                         orespuesta.Exito = 1;
                     }
@@ -189,22 +223,17 @@ namespace escuelaPrueba.Controllers
                 }
                 return Ok(orespuesta);
             }
-            [HttpPut]
-            public IActionResult Edit(alumnoRequest omodel)
+            [HttpPut("{id}")]
+            public IActionResult Edit(int id, [FromBody] Alumno alumno)
             {
                 Respuesta orespuesta = new Respuesta();
                 try
                 {
                     using (escuelaContext db = new escuelaContext())
                     {
-                        Alumno oAlumno = db.Alumno.Find(omodel.id);
-                        oAlumno.Nombre = omodel.nombre;
-                        oAlumno.ApellidoPaterno = omodel.apellidoPaterno;
-                        oAlumno.ApellidoMaterno = omodel.apellidoMaterno;
-                        oAlumno.Telefono = omodel.telefono;
-                        oAlumno.Edad = omodel.edad;
-                        oAlumno.Genero = omodel.genero;
-                        db.Entry(oAlumno).State = EntityState.Modified;
+                        alumno.Id = id;
+                        db.Entry(alumno).State = EntityState.Modified;
+                        db.Update(alumno);
                         db.SaveChanges();
                         orespuesta.Exito = 1;
                     }
@@ -236,7 +265,7 @@ namespace escuelaPrueba.Controllers
                     orespuesta.Mensaje = ex.Message;
                 }
                 return Ok(orespuesta);
-            }*/
+            }
 
 
     }

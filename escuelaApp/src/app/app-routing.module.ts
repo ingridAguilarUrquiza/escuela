@@ -12,6 +12,7 @@ const routes: Routes = [
   {path:'editarA/:id',component:AgregarEditarAlumnoComponent},
   {path:'editarSalon/:id',component:AgregarEditarSalonComponent},
   {path:'listadoA',component:ListadoAlumnosComponent},
+  {path:'delete/:id',component:ListadoAlumnosComponent},
   {path:'ver/:id',component:VerAlumnoComponent},
   {path:'listadoSalones',component:ListadoSalonesComponent},
   {path:'agregarSalon',component:AgregarEditarSalonComponent},
