@@ -14,6 +14,9 @@ import { Respuesta } from 'src/app/models/respuesta';
 export class ListadoAlumnosComponent implements OnInit {
   list:any;
   loaging=false;
+  //listSalon:any;
+
+  nombreSalon:any;
   constructor(private alumnoService: AlumnoService,private router:Router) { 
      
   }
@@ -25,9 +28,9 @@ export class ListadoAlumnosComponent implements OnInit {
     this.alumnoService.getListAlumno().subscribe( resp => {
       this.loaging=false;
       this.list=resp.data as string[];
-     /*console.log(resp);
+      
     debugger;
-      console.log(this.list);*/
+    console.log(this.list);
     })
   }
   delete(id: number){
@@ -51,5 +54,5 @@ export class ListadoAlumnosComponent implements OnInit {
   }
 
 
-  
+
 }

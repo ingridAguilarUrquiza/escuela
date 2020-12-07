@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup,Validators} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Alumno } from 'src/app/models/alumno';
 import { AlumnoService } from 'src/app/services/alumno.service';
+import { SalonService } from 'src/app/services/salon.service';
 
 @Component({
   selector: 'app-agregar-editar-alumno',
@@ -13,9 +14,12 @@ export class AgregarEditarAlumnoComponent implements OnInit {
   registroAlumno: FormGroup;
   idAlumno=0;
   accion='Agregar';
+  loading=false;
   alumno:any;
+  listaSalon:any;
+  salonAsignado:any;
   constructor(private formValidar:FormBuilder, private router:ActivatedRoute, 
-    private alumnoService:AlumnoService,private routerR:Router) {
+    private alumnoService:AlumnoService,private salonService:SalonService,private routerR:Router) {
      this.registroAlumno=this.formValidar.group({
        nombre:['',Validators.required],
        apellidoPaterno:['',Validators.required],
@@ -31,6 +35,7 @@ export class AgregarEditarAlumnoComponent implements OnInit {
 
   ngOnInit(): void {
     this.editarAlumno();
+    this.cargarSalones();
   }
 guardarAlumno(){
   if(this.accion==='Agregar'){
@@ -42,6 +47,8 @@ guardarAlumno(){
     edad:this.registroAlumno.get('edad')?.value,
     genero:this.registroAlumno.get('genero')?.value
   }
+  this.valorSelect();
+
   this.alumnoService.guardarAlumno(alumno).subscribe(data =>{
     this.routerR.navigate(['/']);
   })
@@ -81,5 +88,17 @@ editarAlumno(){
     })
    
   }
+}
+cargarSalones(){
+  this.loading=true;
+  this.salonService.getListSalon().subscribe( response => {
+    this.loading=false;
+    this.listaSalon= response.data;
+  /*debugger;
+    console.log(this.listaSalon);*/
+  })
+}
+valorSelect(){
+  console.log("entro al metodo");
 }
 }

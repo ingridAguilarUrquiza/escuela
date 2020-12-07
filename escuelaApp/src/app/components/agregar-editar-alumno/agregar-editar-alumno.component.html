@@ -48,11 +48,21 @@
       <div class="form-group row">
         <label class="control-label col-md-12">Genero</label>
         <div class="col-md-12">
-          <input type="text" class="form-control" formControlName="genero">
+          <select class="form-select" formControlName="genero">
+            <option selected>Seleccion de Genero</option>
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+          </select>
         </div>
         <span class="text-danger ml-3" *ngIf="registroAlumno.controls.genero.errors?.required && registroAlumno.controls.genero.touched">
             El genero es requerido
         </span>
+      </div>
+      <div class="form-group">
+        <label>Asignar Salon</label>
+        <select class="form-control" id="salonAsignado" name="salonAsignado">
+          <option *ngFor="let salones of listaSalon" value="{{salones.nombre}}">{{salones.nombre}}</option>
+        </select>
       </div>
       <div class="form-group">
           <button class="btn btn-success float-right" [disabled]="registroAlumno.invalid">Aceptar</button>

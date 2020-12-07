@@ -157,15 +157,19 @@ namespace escuelaPrueba.Controllers
                                 Nombre =alu.Nombre,
                                 ApellidoPaterno=alu.ApellidoPaterno,
                                 ApellidoMaterno=alu.ApellidoMaterno,
-                                ListSalon = new List<int>()
+                                ListSalon = new List<SalonDto>()
                             }).ToList();
 
                             foreach (var alumno in listAlumno)
                             {
-                                var relacionSalon =db.Alumnosalon.FirstOrDefault(f => f.AlumnoId == alumno.Id);
+                                var relacionSalon =db.Alumnosalon.Include("Salon").FirstOrDefault(f => f.AlumnoId == alumno.Id);
                                 if (relacionSalon != null)
                                 {
-                                    alumno.ListSalon.Add((int)relacionSalon.SalonId);
+                            alumno.ListSalon.Add(new SalonDto()
+                            {
+                                Id = relacionSalon.Salon.Id,
+                                Nombre=relacionSalon.Salon.Nombre
+                                }) ;
                                 }
 
                             }
