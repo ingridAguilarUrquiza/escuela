@@ -28,7 +28,6 @@ export class ListadoAlumnosComponent implements OnInit {
     this.alumnoService.getListAlumno().subscribe( resp => {
       this.loaging=false;
       this.list=resp.data as string[];
-      
     debugger;
     console.log(this.list);
     })
