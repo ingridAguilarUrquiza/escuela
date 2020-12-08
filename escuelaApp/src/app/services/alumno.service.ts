@@ -16,7 +16,9 @@ export class AlumnoService {
   };
   constructor(
     private _http:HttpClient
-    ) {}
+    ) {
+
+    }
   
   getListAlumno(): Observable<Respuesta>{
     return this._http.get<Respuesta>(this.backendUrl+this.frontendUrl);

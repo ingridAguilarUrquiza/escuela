@@ -207,17 +207,34 @@ namespace escuelaPrueba.Controllers
 
         }
         [HttpPost]//insersion de datos a la base Escuela
-            public IActionResult Add([FromBody] Alumno alumno) 
+            public IActionResult Add([FromBody] RelacionAlumnoSalon alumno) 
             {
                 Respuesta orespuesta = new Respuesta();
                 try
                 {
                     using (escuelaContext db = new escuelaContext())
                     {
-                        
-                        db.Alumno.Add(alumno);
+                    var nuevoAlumno = new Alumno();
+                    nuevoAlumno.Nombre = alumno.nombre;
+                    nuevoAlumno.ApellidoPaterno = alumno.apellidoPaterno;
+                    nuevoAlumno.ApellidoMaterno = alumno.apellidoMaterno;
+                    nuevoAlumno.Telefono = alumno.telefono;
+                    nuevoAlumno.Edad = alumno.edad;
+                    nuevoAlumno.Genero = alumno.genero;
+                                     
+                     //return Ok(alumno.Alumnosalon);
+                        db.Alumno.Add(nuevoAlumno);
                         db.SaveChanges();
+
+                    var nuevoAlumnoSalon = new Alumnosalon();
+                    nuevoAlumnoSalon.AlumnoId = nuevoAlumno.Id;
+                    nuevoAlumnoSalon.SalonId = alumno.idSalon;
+                    nuevoAlumnoSalon.Activo = 1;
+                    db.Alumnosalon.Add(nuevoAlumnoSalon);
+                    db.SaveChanges();
+                        //db.Alumnosalon.Add(alumno.Alumnosalon[0]);
                         orespuesta.Exito = 1;
+                        orespuesta.Data = nuevoAlumno;
                     }
 
                 }

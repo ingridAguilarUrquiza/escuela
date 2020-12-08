@@ -6,5 +6,6 @@ export interface Alumno{
     telefono: string;
     edad: number;
     genero: string;
+    idSalon:number;
 
 }

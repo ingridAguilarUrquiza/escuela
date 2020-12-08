@@ -26,7 +26,8 @@ export class AgregarEditarAlumnoComponent implements OnInit {
        apellidoMaterno:['',Validators.required],
        telefono:['',Validators.required],
        edad:['',Validators.required],
-       genero:['',Validators.required]
+       genero:['',Validators.required],
+       salonAsignado:['',Validators.required]
      });
     if(this.router.snapshot.params['id']>0){
       this.idAlumno=this.router.snapshot.params['id'];
@@ -45,10 +46,11 @@ guardarAlumno(){
     apellidoMaterno:this.registroAlumno.get('apellidoMaterno')?.value,
     telefono:this.registroAlumno.get('telefono')?.value,
     edad:this.registroAlumno.get('edad')?.value,
-    genero:this.registroAlumno.get('genero')?.value
+    genero:this.registroAlumno.get('genero')?.value,
+    idSalon:parseInt(this.registroAlumno.get('salonAsignado')?.value)
+    
   }
-  this.valorSelect();
-
+  debugger;
   this.alumnoService.guardarAlumno(alumno).subscribe(data =>{
     this.routerR.navigate(['/']);
   })
@@ -59,9 +61,11 @@ guardarAlumno(){
       apellidoMaterno:this.registroAlumno.get('apellidoMaterno')?.value,
       telefono:this.registroAlumno.get('telefono')?.value,
       edad:this.registroAlumno.get('edad')?.value,
-      genero:this.registroAlumno.get('genero')?.value
+      genero:this.registroAlumno.get('genero')?.value,
+      idSalon:parseInt(this.registroAlumno.get('salonAsignado')?.value)
+
     }
-    //debugger;
+   // debugger;
     this.alumnoService.actualizarAlumno(this.idAlumno,alumno).subscribe(data=>{
       this.routerR.navigate(['/']);
     });
@@ -83,7 +87,8 @@ editarAlumno(){
         apellidoMaterno:resp.data.apellidoMaterno,
         telefono:resp.data.telefono,
         edad:resp.data.edad,
-        genero:resp.data.genero
+        genero:resp.data.genero,
+        idSalon:resp.data.listSalon[0].salonAsignado
       })
     })
    
@@ -98,7 +103,5 @@ cargarSalones(){
     console.log(this.listaSalon);*/
   })
 }
-valorSelect(){
-  console.log("entro al metodo");
-}
+
 }
