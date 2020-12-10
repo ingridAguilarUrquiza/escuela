@@ -21,7 +21,7 @@
       <div class="form-group row">
         <label class="control-label col-md-12">Apellido Materno</label>
         <div class="col-md-12">
-          <input type="text" class="form-control"formControlName="apellidoMaterno">
+          <input type="text" class="form-control" formControlName="apellidoMaterno">
         </div>
         <span class="text-danger ml-3" *ngIf="registroAlumno.controls.apellidoMaterno.errors?.required && registroAlumno.controls.apellidoMaterno.touched">
             El apellido Materno es requerido
@@ -30,13 +30,13 @@
       <div class="form-group row">
         <label class="control-label col-md-12">Telefono</label>
         <div class="col-md-12">
-          <input type="text" class="form-control" formControlName="telefono">
+          <input type="text"  class="form-control" formControlName="telefono">
         </div>
         <span class="text-danger ml-3" *ngIf="registroAlumno.controls.telefono.errors?.required && registroAlumno.controls.telefono.touched" >
             El numero de telefono es requerido
         </span>
       </div>
-      <div class="form-group row">
+     <div class="form-group row">
         <label class="control-label col-md-12">Edad</label>
         <div class="col-md-12">
           <input type="number" min=0 class="form-control" formControlName="edad">
@@ -45,7 +45,7 @@
             La edad es requerida
         </span>
       </div>
-      <div class="form-group row">
+     <div class="form-group row">
         <label class="control-label col-md-12">Genero</label>
         <div class="col-md-12">
           <select class="form-control" formControlName="genero">
@@ -58,12 +58,18 @@
             El genero es requerido
         </span>
       </div>
-      <div class="form-group">
-        <label>Asignar Salon</label>
-        <select class="form-control" formControlName="salonAsignado">
-          <option *ngFor="let salones of listaSalon" value="{{salones.id}}">{{salones.nombre}}</option>
-        </select>
+      <div class="form-group row">
+          <label>Asignar Salon</label>
+          <div class="col-md-12">
+          <select class="form-control" formControlName="salon">
+            <option *ngFor="let salon of listaSalon" value="{{salon.nombre}}">{{salon.nombre}}</option>
+          </select>
+          </div>
+          <span class="text-danger ml-3" *ngIf="registroAlumno.controls.salon.errors?.required && registroAlumno.controls.salon.touched">
+            El salon es requerido
+          </span>
       </div>
+     
       <div class="form-group">
           <button class="btn btn-success float-right" [disabled]="registroAlumno.invalid">Aceptar</button>
           <button [routerLink]="['/']" class="btn btn-secondary float-left">Cancelar</button>

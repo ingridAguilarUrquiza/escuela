@@ -20,6 +20,7 @@ export class VerAlumnoComponent implements OnInit {
   cargarAlumno(){
     this.alumnoService.cargarAlumno(this.idAlumno).subscribe(resp =>{
       this.alumno =resp.data as string[];
+      console.log(this.alumno);
     })
   }
 

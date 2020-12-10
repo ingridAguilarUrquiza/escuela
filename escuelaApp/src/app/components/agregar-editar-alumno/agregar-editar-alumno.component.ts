@@ -17,9 +17,11 @@ export class AgregarEditarAlumnoComponent implements OnInit {
   loading=false;
   alumno:any;
   listaSalon:any;
-  salonAsignado:any;
+  dato:any;
+  //salonAsignado:any;
   constructor(private formValidar:FormBuilder, private router:ActivatedRoute, 
-    private alumnoService:AlumnoService,private salonService:SalonService,private routerR:Router) {
+    private alumnoService:AlumnoService,private salonService:SalonService,
+    private routerR:Router) {
      this.registroAlumno=this.formValidar.group({
        nombre:['',Validators.required],
        apellidoPaterno:['',Validators.required],
@@ -27,7 +29,7 @@ export class AgregarEditarAlumnoComponent implements OnInit {
        telefono:['',Validators.required],
        edad:['',Validators.required],
        genero:['',Validators.required],
-       salonAsignado:['',Validators.required]
+       salon:['',Validators.required]
      });
     if(this.router.snapshot.params['id']>0){
       this.idAlumno=this.router.snapshot.params['id'];
@@ -35,22 +37,21 @@ export class AgregarEditarAlumnoComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.editarAlumno();
+    //this.editarAlumno();
     this.cargarSalones();
   }
 guardarAlumno(){
-  if(this.accion==='Agregar'){
-  const alumno:Alumno={
+ if(this.accion==='Agregar'){
+    const alumno:Alumno={
     nombre:this.registroAlumno.get('nombre')?.value,
     apellidoPaterno:this.registroAlumno.get('apellidoPaterno')?.value,
     apellidoMaterno:this.registroAlumno.get('apellidoMaterno')?.value,
     telefono:this.registroAlumno.get('telefono')?.value,
     edad:this.registroAlumno.get('edad')?.value,
     genero:this.registroAlumno.get('genero')?.value,
-    idSalon:parseInt(this.registroAlumno.get('salonAsignado')?.value)
-    
+    nombreSalon:this.registroAlumno.get('salon')?.value
   }
-  debugger;
+  //debugger;
   this.alumnoService.guardarAlumno(alumno).subscribe(data =>{
     this.routerR.navigate(['/']);
   })
@@ -62,45 +63,83 @@ guardarAlumno(){
       telefono:this.registroAlumno.get('telefono')?.value,
       edad:this.registroAlumno.get('edad')?.value,
       genero:this.registroAlumno.get('genero')?.value,
-      idSalon:parseInt(this.registroAlumno.get('salonAsignado')?.value)
+      nombreSalon:this.registroAlumno.get('salon')?.value
 
     }
    // debugger;
     this.alumnoService.actualizarAlumno(this.idAlumno,alumno).subscribe(data=>{
       this.routerR.navigate(['/']);
     });
-  
+
   }
   //console.log(this.registroAlumno);
  
 }
-editarAlumno(){
+/*editarAlumno(){
+  //this.cargarSalones();
  // alert("editar"+this.accion);
-  if(this.idAlumno>0){
-    this.accion='Editar';
-    this.alumnoService.cargarAlumno(this.idAlumno).subscribe(resp=>{
-      this.alumno=resp.data as string[];
-      this.registroAlumno.patchValue({
-        id:resp.data.id,
-        nombre:resp.data.nombre,
-        apellidoPaterno:resp.data.apellidoPaterno,
-        apellidoMaterno:resp.data.apellidoMaterno,
-        telefono:resp.data.telefono,
-        edad:resp.data.edad,
-        genero:resp.data.genero,
-        idSalon:resp.data.listSalon[0].salonAsignado
-      })
+ if(this.idAlumno>0){
+  this.accion='Editar';
+  console.log("inicia la carga de alumno");
+  this.alumnoService.cargarAlumno(this.idAlumno).subscribe(resp=>{
+    this.alumno=resp.data as string[];
+    //debugger;
+    console.log(this.alumno);
+    this.registroAlumno.patchValue({
+      nombre:this.alumno.nombre,
+      apellidoPaterno:this.alumno.apellidoPaterno,
+      apellidoMaterno:this.alumno.apellidoMaterno,
+      telefono:this.alumno.telefono,
+      edad:this.alumno.edad,
+      genero:this.alumno.genero,
+      salon:this.alumno.nombreSalon
+      //salon.setValue(this.alumno.nombreSalon);
     })
-   
-  }
+    //salon:this.alumno.setValue("hola");
+    //debugger;
+      console.log(this.alumno);
+  })
+  
 }
+}*/
 cargarSalones(){
+  //console.log("inicia carga de salones");
+  /*this.loading=true;
+  this.salonService.getListSalon().subscribe( response => {
+    this.loading=false;
+    //console.log("salones cargados");
+    this.listaSalon= response.data;
+    //this.dato=this.listaSalon.nombreSalon
+    console.log("se cargaron los salones en editar Alumno");
+    console.log(this.listaSalon);*/
+  //})
+ //console.log("inicia carga de salones");
   this.loading=true;
   this.salonService.getListSalon().subscribe( response => {
     this.loading=false;
+    console.log("salones cargados");
     this.listaSalon= response.data;
-  /*debugger;
-    console.log(this.listaSalon);*/
+    console.log("se cargaron los salones en editar Alumno");
+    console.log(this.listaSalon);
+  if(this.idAlumno>0){
+    this.accion='Editar';
+    console.log("inicia la carga de alumno");
+    this.alumnoService.cargarAlumno(this.idAlumno).subscribe(resp=>{
+      this.alumno=resp.data as string[];
+      //debugger;
+      console.log(this.alumno);
+      this.registroAlumno.patchValue({
+        nombre:this.alumno.nombre,
+        apellidoPaterno:this.alumno.apellidoPaterno,
+        apellidoMaterno:this.alumno.apellidoMaterno,
+        telefono:this.alumno.telefono,
+        edad:this.alumno.edad,
+        genero:this.alumno.genero,
+        salon:this.alumno.nombreSalon
+      })
+    })
+  } 
+    //debugger;
   })
 }
 

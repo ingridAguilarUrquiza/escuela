@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AutoMapper;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,8 @@ namespace escuelaPrueba
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //agregar autoMapper
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             //agregar el servicio de la conexion a la base de datos Mysql
             services.AddDbContext<escuelaContext>(options =>
             options.UseMySql(Configuration.GetConnectionString("conexion")));

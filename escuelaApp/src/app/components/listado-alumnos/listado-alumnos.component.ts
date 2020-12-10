@@ -28,11 +28,12 @@ export class ListadoAlumnosComponent implements OnInit {
     this.alumnoService.getListAlumno().subscribe( resp => {
       this.loaging=false;
       this.list=resp.data as string[];
-    debugger;
+   debugger;
     console.log(this.list);
     })
   }
   delete(id: number){
+    console.log("entro a la eliminacion"+id);
     this.loaging=true;
     this.alumnoService.deleteAlumno(id).subscribe(data =>{
       this.loaging=false;

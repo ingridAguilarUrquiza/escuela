@@ -7,6 +7,7 @@ namespace escuelaPrueba.DTO
 {
     public class RelacionAlumnoSalon
     {
+        public int id { get; set; }
         public string nombre { get; set; }
         public string apellidoPaterno { get; set; }
         public string apellidoMaterno { get; set; }
@@ -14,6 +15,8 @@ namespace escuelaPrueba.DTO
         public int edad { get; set; }
         public string genero { get; set; }
         public int idSalon { get; set; }
+        public string nombreSalon { get; set;
+       }
 
     }
 }

@@ -184,16 +184,29 @@ namespace escuelaPrueba.Controllers
                 return Ok(orespuesta);
             }
         [HttpGet("{id}")]
-        public ActionResult<Alumno> Get(int id)
+        public ActionResult<RelacionAlumnoSalon> Get(int id)
         {
             Respuesta orespuesta = new Respuesta();
             try
             {
-                using (escuelaContext db=new escuelaContext())
+                using (escuelaContext db = new escuelaContext())
                 {
-                    var alumno = db.Alumno.Find(id);
+                    var alumno = db.Alumnosalon.Include(x => x.Alumno).Include(x => x.Salon).FirstOrDefault(f => f.AlumnoId == id);
+                    RelacionAlumnoSalon response = new RelacionAlumnoSalon();
+                    response.id = alumno.Alumno.Id;
+                    response.nombre = alumno.Alumno.Nombre;
+                    response.apellidoPaterno = alumno.Alumno.ApellidoPaterno;
+                    response.apellidoMaterno = alumno.Alumno.ApellidoMaterno;
+                    response.telefono = alumno.Alumno.Telefono;
+                    response.edad = (int)alumno.Alumno.Edad;
+                    response.genero = alumno.Alumno.Genero;
+                    response.idSalon = alumno.Salon.Id;
+                    response.nombreSalon = alumno.Salon.Nombre;
+
+                    //var alumnoSalon = db.Alumnosalon.(id).AlumnoId;
                     orespuesta.Exito = 1;
-                    orespuesta.Data = alumno;
+                    orespuesta.Data = response;
+                    //orespuesta.Data =alumnoSalon;
 
                 }
                    
@@ -214,6 +227,7 @@ namespace escuelaPrueba.Controllers
                 {
                     using (escuelaContext db = new escuelaContext())
                     {
+                    //return Ok(alumno);
                     var nuevoAlumno = new Alumno();
                     nuevoAlumno.Nombre = alumno.nombre;
                     nuevoAlumno.ApellidoPaterno = alumno.apellidoPaterno;
@@ -223,16 +237,16 @@ namespace escuelaPrueba.Controllers
                     nuevoAlumno.Genero = alumno.genero;
                                      
                      //return Ok(alumno.Alumnosalon);
-                        db.Alumno.Add(nuevoAlumno);
+                       db.Alumno.Add(nuevoAlumno);
+                       db.SaveChanges();
+                        var salon =( from sa in db.Salon where sa.Nombre == alumno.nombreSalon select sa).FirstOrDefault<Salon>();
+                   
+                        var nuevoAlumnoSalon = new Alumnosalon();
+                        nuevoAlumnoSalon.AlumnoId = nuevoAlumno.Id;
+                        nuevoAlumnoSalon.SalonId = salon.Id;
+                        nuevoAlumnoSalon.Activo = 1;
+                        db.Alumnosalon.Add(nuevoAlumnoSalon);
                         db.SaveChanges();
-
-                    var nuevoAlumnoSalon = new Alumnosalon();
-                    nuevoAlumnoSalon.AlumnoId = nuevoAlumno.Id;
-                    nuevoAlumnoSalon.SalonId = alumno.idSalon;
-                    nuevoAlumnoSalon.Activo = 1;
-                    db.Alumnosalon.Add(nuevoAlumnoSalon);
-                    db.SaveChanges();
-                        //db.Alumnosalon.Add(alumno.Alumnosalon[0]);
                         orespuesta.Exito = 1;
                         orespuesta.Data = nuevoAlumno;
                     }
@@ -245,18 +259,40 @@ namespace escuelaPrueba.Controllers
                 return Ok(orespuesta);
             }
             [HttpPut("{id}")]
-            public IActionResult Edit(int id, [FromBody] Alumno alumno)
+            public IActionResult Edit(int id, [FromBody] RelacionAlumnoSalon alumno)
             {
                 Respuesta orespuesta = new Respuesta();
                 try
                 {
                     using (escuelaContext db = new escuelaContext())
                     {
-                        alumno.Id = id;
+                    //return Ok(id);
+                        Alumno editarAlumno = db.Alumno.Find(id);
+                        editarAlumno.Nombre = alumno.nombre;
+                        editarAlumno.ApellidoPaterno = alumno.apellidoPaterno;
+                        editarAlumno.ApellidoMaterno = alumno.apellidoMaterno;
+                        editarAlumno.Telefono = alumno.telefono;
+                        editarAlumno.Edad = alumno.edad;
+                        editarAlumno.Genero = alumno.genero;
+                        db.Entry(editarAlumno).State = EntityState.Modified;
+                        db.Update(editarAlumno);
+                        db.SaveChanges();
+
+                    var salon = (from sa in db.Salon where sa.Nombre == alumno.nombreSalon select sa).FirstOrDefault<Salon>();
+
+                        Alumnosalon editarSalonAlumno = db.Alumnosalon.Find(salon.Id);
+                        editarSalonAlumno.SalonId = salon.Id;
+                        db.Entry(editarSalonAlumno).State = EntityState.Modified;
+                        db.Update(editarSalonAlumno);
+                        db.SaveChanges();
+                        orespuesta.Exito = 1;
+                    //return Ok(alumno.idSalon);
+                        /*alumno.id = id;
                         db.Entry(alumno).State = EntityState.Modified;
                         db.Update(alumno);
                         db.SaveChanges();
                         orespuesta.Exito = 1;
+                        db.Entry(alumno.idSalon).State = EntityState.Modified;*/
                     }
 
                 }
@@ -274,8 +310,11 @@ namespace escuelaPrueba.Controllers
                 {
                     using (escuelaContext db = new escuelaContext())
                     {
-                        Alumno oAlumno = db.Alumno.Find(id);
-                        db.Remove(oAlumno);
+                    //return Ok(id);
+                        Alumnosalon borrarAlumno = db.Alumnosalon.Find(id);
+                        borrarAlumno.Activo=0;
+                        db.Entry(borrarAlumno).State = EntityState.Modified;
+                        db.Update(borrarAlumno);
                         db.SaveChanges();
                         orespuesta.Exito = 1;
                     }
