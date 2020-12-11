@@ -7,6 +7,9 @@
         <button class="btn btn-primary float-right" [routerLink]="['agregarA']">Nuevo Alumno</button>
     </div>
 </div>
+<div class="spinner-border text-primary" role="status" *ngIf="loading">
+    <span class="sr-only">Loading...</span>
+  </div>
 <br>
 <table class="table table-sm table-hover">
     <thead>

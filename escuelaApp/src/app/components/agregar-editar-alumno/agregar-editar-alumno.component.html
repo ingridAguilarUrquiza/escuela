@@ -1,4 +1,8 @@
 <h3>{{accion}}  Alumno</h3>
+<div class="spinner-border text-primary" role="status" *ngIf="loading">
+  <span class="sr-only">Loading...</span>
+</div>
+<br>
 <form [formGroup]="registroAlumno" (ngSubmit)="guardarAlumno()">
     <div class="form-group row">
       <label class="control-label col-md-12">Nombre</label>

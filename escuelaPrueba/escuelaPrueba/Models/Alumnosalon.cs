@@ -8,7 +8,7 @@ namespace escuelaPrueba.Models
         public int Id { get; set; }
         public int? AlumnoId { get; set; }
         public int? SalonId { get; set; }
-        public byte? Activo { get; set; }
+        public bool? Activo { get; set; }
 
         public virtual Alumno Alumno { get; set; }
         public virtual Salon Salon { get; set; }

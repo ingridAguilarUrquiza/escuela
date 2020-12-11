@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using escuelaPrueba.DTO;
+using escuelaPrueba.Models;
+using escuelaPrueba.Models.Reponse;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using escuelaPrueba.Models;
-using escuelaPrueba.Models.Reponse;
-using escuelaPrueba.Models.Request;
-using Microsoft.EntityFrameworkCore;
-using escuelaPrueba.DTO;
 
 namespace escuelaPrueba.Controllers
 {
@@ -142,47 +139,52 @@ namespace escuelaPrueba.Controllers
          }
      }*/
         [HttpGet]//listado de datos
-            public IActionResult Get()
+        public IActionResult Get()
+        {
+            Respuesta orespuesta = new Respuesta();
+            orespuesta.Exito = 0;
+            try
             {
-                Respuesta orespuesta = new Respuesta();
-                orespuesta.Exito = 0;
-                try
+                using (escuelaContext db = new escuelaContext())
                 {
-                    using (escuelaContext db = new escuelaContext())
-                    {
-                            var listAlumno = db.Alumno.Select(alu =>
-                            new AlumnoInfo()
-                            {
-                                Id = alu.Id,
-                                Nombre =alu.Nombre,
-                                ApellidoPaterno=alu.ApellidoPaterno,
-                                ApellidoMaterno=alu.ApellidoMaterno,
-                                ListSalon = new List<SalonDto>()
-                            }).ToList();
 
-                            foreach (var alumno in listAlumno)
-                            {
-                                var relacionSalon =db.Alumnosalon.Include("Salon").FirstOrDefault(f => f.AlumnoId == alumno.Id);
-                                if (relacionSalon != null)
-                                {
+                    var listAlumno = db.Alumno.Select(alu =>
+                    new AlumnoInfo()
+                    {
+                        Id = alu.Id,
+                        Nombre = alu.Nombre,
+                        ApellidoPaterno = alu.ApellidoPaterno,
+                        ApellidoMaterno = alu.ApellidoMaterno,
+                        ListSalon = new List<SalonDto>(),
+                        //alumnoSalon=new List<AlumnoSalon>()
+                    }).ToList();
+                    //var mostrar=(from mostrarActivo in Alumnosalon where mostrarActivo.AlumnoId=listAlumno.id mostrarActivo select).FirstOrDefault();
+                    foreach (var alumno in listAlumno)
+                    {
+                        //var mostrarStatus = from activo in db.Alumnosalon where activo.AlumnoId = alumno.Id , activo.Activo = true select activo;
+                        var relacionSalon = db.Alumnosalon.Include("Salon").FirstOrDefault(f => f.AlumnoId == alumno.Id);
+                        //var mostrar=(from mostrarActivo in Alumnosalon where mostrarActivo.AlumnoId=listAlumno.id mostrarActivo select).FirstOrDefault();
+
+                        if (relacionSalon != null)
+                        {
                             alumno.ListSalon.Add(new SalonDto()
                             {
                                 Id = relacionSalon.Salon.Id,
-                                Nombre=relacionSalon.Salon.Nombre
-                                }) ;
-                                }
+                                Nombre = relacionSalon.Salon.Nombre
+                            });
+                        }
 
-                            }
-                        orespuesta.Exito = 1;
-                        orespuesta.Data = listAlumno;
                     }
+                    orespuesta.Exito = 1;
+                    orespuesta.Data = listAlumno;
                 }
-                catch (Exception ex)
-                {
-                    orespuesta.Mensaje = ex.Message;
-                }
-                return Ok(orespuesta);
             }
+            catch (Exception ex)
+            {
+                orespuesta.Mensaje = ex.Message;
+            }
+            return Ok(orespuesta);
+        }
         [HttpGet("{id}")]
         public ActionResult<RelacionAlumnoSalon> Get(int id)
         {
@@ -209,24 +211,24 @@ namespace escuelaPrueba.Controllers
                     //orespuesta.Data =alumnoSalon;
 
                 }
-                   
+
             }
             catch (Exception ex)
             {
-                orespuesta.Mensaje=ex.Message;
+                orespuesta.Mensaje = ex.Message;
 
             }
             return Ok(orespuesta);
 
         }
         [HttpPost]//insersion de datos a la base Escuela
-            public IActionResult Add([FromBody] RelacionAlumnoSalon alumno) 
+        public IActionResult Add([FromBody] RelacionAlumnoSalon alumno)
+        {
+            Respuesta orespuesta = new Respuesta();
+            try
             {
-                Respuesta orespuesta = new Respuesta();
-                try
+                using (escuelaContext db = new escuelaContext())
                 {
-                    using (escuelaContext db = new escuelaContext())
-                    {
                     //return Ok(alumno);
                     var nuevoAlumno = new Alumno();
                     nuevoAlumno.Nombre = alumno.nombre;
@@ -235,97 +237,115 @@ namespace escuelaPrueba.Controllers
                     nuevoAlumno.Telefono = alumno.telefono;
                     nuevoAlumno.Edad = alumno.edad;
                     nuevoAlumno.Genero = alumno.genero;
-                                     
-                     //return Ok(alumno.Alumnosalon);
-                       db.Alumno.Add(nuevoAlumno);
-                       db.SaveChanges();
-                        var salon =( from sa in db.Salon where sa.Nombre == alumno.nombreSalon select sa).FirstOrDefault<Salon>();
-                   
-                        var nuevoAlumnoSalon = new Alumnosalon();
-                        nuevoAlumnoSalon.AlumnoId = nuevoAlumno.Id;
-                        nuevoAlumnoSalon.SalonId = salon.Id;
-                        nuevoAlumnoSalon.Activo = 1;
-                        db.Alumnosalon.Add(nuevoAlumnoSalon);
-                        db.SaveChanges();
-                        orespuesta.Exito = 1;
-                        orespuesta.Data = nuevoAlumno;
-                    }
 
+                    //return Ok(alumno.Alumnosalon);
+                    db.Alumno.Add(nuevoAlumno);
+                    db.SaveChanges();
+                    var salon = (from sa in db.Salon where sa.Nombre == alumno.nombreSalon select sa).FirstOrDefault<Salon>();
+
+                    var nuevoAlumnoSalon = new Alumnosalon();
+                    nuevoAlumnoSalon.AlumnoId = nuevoAlumno.Id;
+                    nuevoAlumnoSalon.SalonId = salon.Id;
+                    nuevoAlumnoSalon.Activo = true;
+                    db.Alumnosalon.Add(nuevoAlumnoSalon);
+                    db.SaveChanges();
+                    orespuesta.Exito = 1;
+                    orespuesta.Data = nuevoAlumno;
                 }
-                catch(Exception ex)
-                {
-                    orespuesta.Mensaje = ex.Message;
-                }
-                return Ok(orespuesta);
+
             }
-            [HttpPut("{id}")]
-            public IActionResult Edit(int id, [FromBody] RelacionAlumnoSalon alumno)
+            catch (Exception ex)
             {
-                Respuesta orespuesta = new Respuesta();
-                try
+                orespuesta.Mensaje = ex.Message;
+            }
+            return Ok(orespuesta);
+        }
+        [HttpPut("{id}")]
+        public IActionResult Edit(int id, [FromBody] RelacionAlumnoSalon alumno)
+        {
+            Respuesta orespuesta = new Respuesta();
+            try
+            {
+                using (escuelaContext db = new escuelaContext())
                 {
-                    using (escuelaContext db = new escuelaContext())
-                    {
                     //return Ok(id);
-                        Alumno editarAlumno = db.Alumno.Find(id);
-                        editarAlumno.Nombre = alumno.nombre;
-                        editarAlumno.ApellidoPaterno = alumno.apellidoPaterno;
-                        editarAlumno.ApellidoMaterno = alumno.apellidoMaterno;
-                        editarAlumno.Telefono = alumno.telefono;
-                        editarAlumno.Edad = alumno.edad;
-                        editarAlumno.Genero = alumno.genero;
-                        db.Entry(editarAlumno).State = EntityState.Modified;
-                        db.Update(editarAlumno);
-                        db.SaveChanges();
+                    Alumno editarAlumno = db.Alumno.Find(id);
+                    editarAlumno.Nombre = alumno.nombre;
+                    editarAlumno.ApellidoPaterno = alumno.apellidoPaterno;
+                    editarAlumno.ApellidoMaterno = alumno.apellidoMaterno;
+                    editarAlumno.Telefono = alumno.telefono;
+                    editarAlumno.Edad = alumno.edad;
+                    editarAlumno.Genero = alumno.genero;
+                    db.Entry(editarAlumno).State = EntityState.Modified;
+                    db.Update(editarAlumno);
+                    db.SaveChanges();
 
                     var salon = (from sa in db.Salon where sa.Nombre == alumno.nombreSalon select sa).FirstOrDefault<Salon>();
 
-                        Alumnosalon editarSalonAlumno = db.Alumnosalon.Find(salon.Id);
-                        editarSalonAlumno.SalonId = salon.Id;
-                        db.Entry(editarSalonAlumno).State = EntityState.Modified;
-                        db.Update(editarSalonAlumno);
-                        db.SaveChanges();
-                        orespuesta.Exito = 1;
+                    Alumnosalon editarSalonAlumno = db.Alumnosalon.Find(salon.Id);
+                    editarSalonAlumno.SalonId = salon.Id;
+                    db.Entry(editarSalonAlumno).State = EntityState.Modified;
+                    db.Update(editarSalonAlumno);
+                    db.SaveChanges();
+                    orespuesta.Exito = 1;
                     //return Ok(alumno.idSalon);
-                        /*alumno.id = id;
-                        db.Entry(alumno).State = EntityState.Modified;
-                        db.Update(alumno);
-                        db.SaveChanges();
-                        orespuesta.Exito = 1;
-                        db.Entry(alumno.idSalon).State = EntityState.Modified;*/
-                    }
+                    /*alumno.id = id;
+                    db.Entry(alumno).State = EntityState.Modified;
+                    db.Update(alumno);
+                    db.SaveChanges();
+                    orespuesta.Exito = 1;
+                    db.Entry(alumno.idSalon).State = EntityState.Modified;*/
+                }
 
-                }
-                catch (Exception ex)
-                {
-                    orespuesta.Mensaje = ex.Message;
-                }
-                return Ok(orespuesta);
             }
-            [HttpDelete("{id}")]
-            public IActionResult Delete(int id)
+            catch (Exception ex)
             {
-                Respuesta orespuesta = new Respuesta();
-                try
+                orespuesta.Mensaje = ex.Message;
+            }
+            return Ok(orespuesta);
+        }
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            Respuesta orespuesta = new Respuesta();
+            try
+            {
+                using (escuelaContext db = new escuelaContext())
                 {
-                    using (escuelaContext db = new escuelaContext())
-                    {
-                    //return Ok(id);
-                        Alumnosalon borrarAlumno = db.Alumnosalon.Find(id);
-                        borrarAlumno.Activo=0;
-                        db.Entry(borrarAlumno).State = EntityState.Modified;
-                        db.Update(borrarAlumno);
-                        db.SaveChanges();
-                        orespuesta.Exito = 1;
-                    }
+                        //return Ok(id);
+                        var borradoLogico = (from cambioActivo in db.Alumnosalon where cambioActivo.AlumnoId == id select cambioActivo).FirstOrDefault<Alumnosalon>();
+                        //return Ok(borradoLogico);
+                        if (borradoLogico != null)
+                        {
+                            Alumnosalon borrarAlumno = db.Alumnosalon.Find(borradoLogico.Id);
+                            borrarAlumno.Activo = default(bool);
+                            db.Entry(borrarAlumno).State = EntityState.Modified;
+                            db.Update(borrarAlumno);
+                            db.SaveChanges();
+                            orespuesta.Exito = 1;
+                        }
+                        else
+                        {
+                            var alumno = db.Alumno.Find(id);
+                            if (alumno != null)
+                            {
+                                db.Remove(alumno);
+                                db.SaveChanges();
+                                orespuesta.Exito = 1;
+                            }
+
+                        }
 
                 }
-                catch (Exception ex)
-                {
-                    orespuesta.Mensaje = ex.Message;
-                }
-                return Ok(orespuesta);
+
             }
+            catch (Exception ex)
+            {
+                orespuesta.Mensaje = ex.Message;
+            }
+
+            return Ok(orespuesta);
+        }
 
 
     }

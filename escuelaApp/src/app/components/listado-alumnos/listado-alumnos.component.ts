@@ -13,7 +13,7 @@ import { Respuesta } from 'src/app/models/respuesta';
 })
 export class ListadoAlumnosComponent implements OnInit {
   list:any;
-  loaging=false;
+  loading=false;
   //listSalon:any;
 
   nombreSalon:any;
@@ -24,19 +24,18 @@ export class ListadoAlumnosComponent implements OnInit {
    this.cargarAlumno();
   }
   cargarAlumno(){
-    this.loaging=true;
+    this.loading=true;
     this.alumnoService.getListAlumno().subscribe( resp => {
-      this.loaging=false;
+      this.loading=false;
       this.list=resp.data as string[];
    debugger;
     console.log(this.list);
     })
   }
   delete(id: number){
-    console.log("entro a la eliminacion"+id);
-    this.loaging=true;
+    this.loading=true;
     this.alumnoService.deleteAlumno(id).subscribe(data =>{
-      this.loaging=false;
+      this.loading=false;
       this.cargarAlumno()
     })
   }
