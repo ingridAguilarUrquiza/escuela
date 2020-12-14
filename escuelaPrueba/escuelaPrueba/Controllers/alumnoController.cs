@@ -148,23 +148,21 @@ namespace escuelaPrueba.Controllers
                 using (escuelaContext db = new escuelaContext())
                 {
 
-                    var listAlumno = db.Alumno.Select(alu =>
-                    new AlumnoInfo()
+                    var datos = (from alumno in db.Alumno
+                                 join status in db.Alumnosalon on alumno.Id equals status.AlumnoId
+                                 where status.Activo == true
+                                 select alumno).ToList().Select(alu =>
+                                 new AlumnoInfo()
+                                 {
+                                     Id = alu.Id,
+                                     Nombre = alu.Nombre,
+                                     ApellidoPaterno = alu.ApellidoPaterno,
+                                     ApellidoMaterno = alu.ApellidoMaterno,
+                                     ListSalon = new List<SalonDto>()
+                                 }).ToList();
+                    foreach (var alumno in datos)
                     {
-                        Id = alu.Id,
-                        Nombre = alu.Nombre,
-                        ApellidoPaterno = alu.ApellidoPaterno,
-                        ApellidoMaterno = alu.ApellidoMaterno,
-                        ListSalon = new List<SalonDto>(),
-                        //alumnoSalon=new List<AlumnoSalon>()
-                    }).ToList();
-                    //var mostrar=(from mostrarActivo in Alumnosalon where mostrarActivo.AlumnoId=listAlumno.id mostrarActivo select).FirstOrDefault();
-                    foreach (var alumno in listAlumno)
-                    {
-                        //var mostrarStatus = from activo in db.Alumnosalon where activo.AlumnoId = alumno.Id , activo.Activo = true select activo;
                         var relacionSalon = db.Alumnosalon.Include("Salon").FirstOrDefault(f => f.AlumnoId == alumno.Id);
-                        //var mostrar=(from mostrarActivo in Alumnosalon where mostrarActivo.AlumnoId=listAlumno.id mostrarActivo select).FirstOrDefault();
-
                         if (relacionSalon != null)
                         {
                             alumno.ListSalon.Add(new SalonDto()
@@ -173,10 +171,9 @@ namespace escuelaPrueba.Controllers
                                 Nombre = relacionSalon.Salon.Nombre
                             });
                         }
-
                     }
                     orespuesta.Exito = 1;
-                    orespuesta.Data = listAlumno;
+                    orespuesta.Data = datos;
                 }
             }
             catch (Exception ex)
@@ -205,10 +202,9 @@ namespace escuelaPrueba.Controllers
                     response.idSalon = alumno.Salon.Id;
                     response.nombreSalon = alumno.Salon.Nombre;
 
-                    //var alumnoSalon = db.Alumnosalon.(id).AlumnoId;
                     orespuesta.Exito = 1;
                     orespuesta.Data = response;
-                    //orespuesta.Data =alumnoSalon;
+                    
 
                 }
 
@@ -229,7 +225,7 @@ namespace escuelaPrueba.Controllers
             {
                 using (escuelaContext db = new escuelaContext())
                 {
-                    //return Ok(alumno);
+                    
                     var nuevoAlumno = new Alumno();
                     nuevoAlumno.Nombre = alumno.nombre;
                     nuevoAlumno.ApellidoPaterno = alumno.apellidoPaterno;
@@ -238,7 +234,6 @@ namespace escuelaPrueba.Controllers
                     nuevoAlumno.Edad = alumno.edad;
                     nuevoAlumno.Genero = alumno.genero;
 
-                    //return Ok(alumno.Alumnosalon);
                     db.Alumno.Add(nuevoAlumno);
                     db.SaveChanges();
                     var salon = (from sa in db.Salon where sa.Nombre == alumno.nombreSalon select sa).FirstOrDefault<Salon>();
@@ -268,7 +263,6 @@ namespace escuelaPrueba.Controllers
             {
                 using (escuelaContext db = new escuelaContext())
                 {
-                    //return Ok(id);
                     Alumno editarAlumno = db.Alumno.Find(id);
                     editarAlumno.Nombre = alumno.nombre;
                     editarAlumno.ApellidoPaterno = alumno.apellidoPaterno;
@@ -288,13 +282,6 @@ namespace escuelaPrueba.Controllers
                     db.Update(editarSalonAlumno);
                     db.SaveChanges();
                     orespuesta.Exito = 1;
-                    //return Ok(alumno.idSalon);
-                    /*alumno.id = id;
-                    db.Entry(alumno).State = EntityState.Modified;
-                    db.Update(alumno);
-                    db.SaveChanges();
-                    orespuesta.Exito = 1;
-                    db.Entry(alumno.idSalon).State = EntityState.Modified;*/
                 }
 
             }
