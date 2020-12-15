@@ -2,9 +2,9 @@
     <span class="sr-only">Loading...</span>
   </div>
 <div>
-    <h3>{{respuesta.data.nombre}}</h3>
-    <h5>{{respuesta.data.descripcion}}</h5>
-    <ul>
-        <li>listado de alumnos</li>
+    <h5>{{respuesta.nombreSalon}}</h5>
+    <h5>Listado de Alumnos</h5>
+    <ul *ngFor="let alumno of respuesta">
+        <li>{{alumno.nombreCompletoAlumno}}</li>
     </ul>
 </div>

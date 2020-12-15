@@ -24,4 +24,16 @@ namespace escuelaPrueba.DTO
     public int Id { get; set; }
     public bool Activo { get; set; }
     }
+    public class DatosGeneral
+    {
+        public int Id { get; set; }
+        public string NombreSalon { get; set; }
+        public string DescripcionSalon { get; set; }
+        public string NombreCompletoAlumno { get; set; }
+        public string NumeroTelefono { get; set; }
+        public int Edad { get; set; }
+        public string Genero { get; set; }
+        public bool Activo { get; set; } 
+
+    }
 }

@@ -11,7 +11,7 @@ import { SalonService } from 'src/app/services/salon.service';
 })
 export class VerSalonComponent implements OnInit {
 loading=false;
-  respuesta!: Respuesta;
+  respuesta:any;
   idSa!: number;
   constructor(private salonService:SalonService, private router:ActivatedRoute) {
     this.idSa=this.router.snapshot.params['id'];
@@ -22,11 +22,13 @@ loading=false;
     this.cargarSalon();
   }
   cargarSalon(){
-console.log(this.idSa);
+  console.log(this.idSa);
     this.loading=true;
     this.salonService.cargarSalon(this.idSa).subscribe(resp =>{
       this.loading=false;
-      this.respuesta =resp.data;
+      //debugger;
+      //console.log(resp);
+     this.respuesta =resp.data as string[];
     //debugger;
       console.log(this.respuesta);
     })

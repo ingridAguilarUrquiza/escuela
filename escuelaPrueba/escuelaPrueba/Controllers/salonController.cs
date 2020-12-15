@@ -130,14 +130,33 @@ namespace escuelaPrueba.Controllers
         public ActionResult<Salon> Get(int id)
         {
             Respuesta orespuesta = new Respuesta();
-            orespuesta.Exito = 0;
+      
             try
             {
                 using (escuelaContext db = new escuelaContext())
                 {
-                    var lst = db.Salon.Find(id);
+                    //var datos= from salon in db.Salon.Include("Alumno").Include("Alumnosalon").Where salon
+                   var lst = db.Salon.Find(id);
+                    var listadoAlumno = (from alumno in db.Alumno
+                                         join relacionAlumno in db.Alumnosalon on alumno.Id equals relacionAlumno.AlumnoId
+                                         where relacionAlumno.SalonId == lst.Id
+                                         select new
+                                         {
+                                             IdSalon = lst.Id,
+                                             NombreSalon = lst.Nombre,
+                                             DescripcionSalon = lst.Descripcion,
+                                             NombreCompletoAlumno = alumno.Nombre.ToString() + " " + alumno.ApellidoPaterno.ToString() + " " + alumno.ApellidoMaterno.ToString(),
+                                             NumeroTelefono = alumno.Telefono,
+                                             Edad = alumno.Edad,
+                                             Genero = alumno.Genero,
+                                             StatusAlumno = relacionAlumno.Activo
+                                         }).ToList();
+                    /*foreach ( var dato in listadoAlumno) 
+                    {
+                        var datos = dato.NombreCompletoAlumno + " " + dato.NombreSalon;
+                    }*/
                     orespuesta.Exito = 1;
-                    orespuesta.Data = lst;
+                    orespuesta.Data = listadoAlumno;
 
                 }
             }
