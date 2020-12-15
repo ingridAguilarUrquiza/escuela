@@ -112,10 +112,35 @@ namespace escuelaPrueba.Controllers
             {
                 using (escuelaContext db = new escuelaContext())
                 {
-                    Salon oSalon = db.Salon.Find(id);
+                    //return Ok(id);
+                    var borradoLogico = (from cambioActivo in db.Alumnosalon where cambioActivo.SalonId == id select cambioActivo).FirstOrDefault<Alumnosalon>();
+                    //return Ok(borradoLogico);
+                    if (borradoLogico != null)
+                    {
+                        Alumnosalon borrarSalon = db.Alumnosalon.Find(borradoLogico.Id);
+                        borrarSalon.Activo = default(bool);
+                        db.Entry(borrarSalon).State = EntityState.Modified;
+                        db.Update(borrarSalon);
+                        db.SaveChanges();
+                        orespuesta.Exito = 1;
+                    }
+                    else
+                    {
+                        var salon = db.Salon.Find(id);
+                        if (salon != null)
+                        {
+                            db.Remove(salon);
+                            db.SaveChanges();
+                            orespuesta.Exito = 1;
+                        }
+
+                    }
+
+
+                    /*Salon oSalon = db.Salon.Find(id);
                     db.Remove(oSalon);
                     db.SaveChanges();
-                    orespuesta.Exito = 1;
+                    orespuesta.Exito = 1;*/
                 }
 
             }
